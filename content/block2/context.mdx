@@ -111,36 +111,45 @@ Claude Code의 실제 동작 방식:
 
 좋은 CLAUDE.md는 **WHY → WHAT → HOW** 순서로 시작합니다. 컨벤션 나열부터 시작하면 AI가 의도를 추정하다 엉뚱한 방향으로 갑니다.
 
+**흔한 첫 실수:**
+- ❌ "완벽하게 써보자" → 한 달째 빈 파일
+- ❌ 모든 컨벤션을 한 번에 → 너무 길어서 아무도 안 읽음
+- ✅ **20분 안에 1버전을 만들고, 계속 고쳐나가는 것이 정답**
+
 ```markdown
 # CLAUDE.md
 
-## 이 프로젝트가 뭔지 (1~2줄) — WHY부터
+## 이 레포가 뭐 하는 건지 (1~2줄)
 프로젝트 관리 REST API. FastAPI + SQLite.
 
-## 기술 스택 & 실행 방법
+## 기술 스택 & 주요 명령어
 - Python 3.11 / FastAPI / pytest
-- 테스트 실행: `python3 -m pytest tests/ -v`
-- 서버 실행: `uvicorn app.main:app --reload`
+- 테스트: `python3 -m pytest tests/ -v`
+- 서버: `uvicorn app.main:app --reload`
 
-## 코딩 컨벤션
+## 코딩 컨벤션 (지금 당장 지켜야 할 것 5개)
 - 함수명: snake_case
 - 반환 형식: dict (to_dict() 메서드 활용)
 - 에러: HTTPException 사용 (직접 raise 금지)
-
-## 절대 하지 말 것
+- status 허용값: todo, in_progress, done, archived
 - 테스트 없이 PR 생성 금지
-- status 필드에 허용 목록 외 값 입력 금지
-  (허용: todo, in_progress, done, archived)
 
 ## AI가 자주 헤매는 것 ⭐ 가장 가치 있는 섹션
-- (실습 중 발견할 때마다 여기에 추가)
+- (실습 중 발견할 때마다 추가)
+- 예: "status 필드에 다른 값 입력하려 함 → 위 컨벤션 참고"
+
+## 건드리면 안 되는 것
+- legacy/ 폴더 (리팩터링 금지)
+- .env 파일 (읽기/쓰기 금지)
 ```
 
 <Callout type="info">
 **Compounding Engineering**: Boris Cherny의 핵심 원칙.
 Claude가 실수할 때마다 "AI가 자주 헤매는 것" 섹션에 추가하면, 같은 실수가 반복되지 않는다.
-이 섹션은 팀 컨벤션 문서에는 없다 — CLAUDE.md에서만 쌓인다.
+이 섹션은 팀 컨벤션 문서에는 없다 — **CLAUDE.md에서만 쌓인다.**
 팀 전체가 AI 실수를 공유하고 누적하면 팀 전체의 AI 품질이 올라간다.
+
+**운영 원칙**: AI가 또 같은 실수를 하면 → 그 자리에서 규칙 추가. 월 1회 낡은 규칙 정리. **200줄을 넘기지 말 것** — 길어지면 중요 규칙이 묻힌다.
 </Callout>
 
 ---
