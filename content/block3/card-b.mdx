@@ -16,12 +16,74 @@ import { Callout, Steps } from 'nextra/components'
 <Callout type="info">
 **어떤 하네스 패턴을 쓰는가**
 
-- **Context**: 반복 패턴의 규칙을 CLAUDE.md에 정의
+- **Context**: 반복 패턴의 규칙을 CLAUDE.md에 정의하고, Skills로 명령어화
 - **Verify**: 여러 샘플로 실행하며 일관성 확인
 
 > 우아한형제들 실제 사례: MCP stdio로 팀 AI 자산(프롬프트, 규칙)을 npm 패키지로 만들어 "공유가 아니라 설치로 전파"
 > — 조현석, [흩어져 있는 AI 자산, 'MCP stdio'로 헤쳐모여!](https://techblog.woowahan.com/25986/) (2026.03)
 </Callout>
+
+---
+
+## Skills — 반복 프롬프트를 `/명령어`로
+
+같은 프롬프트를 매번 치는 대신, `.claude/commands/` 폴더에 파일을 만들면 슬래시 명령어로 실행할 수 있습니다.
+
+```
+.claude/
+└── commands/
+    ├── review.md        # /review
+    ├── pr.md            # /pr
+    └── test-edge.md     # /test-edge
+```
+
+**예시 1: `/review`**
+
+```markdown
+# .claude/commands/review.md
+
+이 코드의 변경사항을 리뷰해줘.
+체크 항목:
+- 테스트 커버리지가 충분한가?
+- 팀 컨벤션(CLAUDE.md)을 지켰는가?
+- 예외 처리가 명확한가?
+- status 필드 값이 허용 목록(todo/in_progress/done/archived) 안에 있는가?
+```
+
+**예시 2: `/test-edge`**
+
+```markdown
+# .claude/commands/test-edge.md
+
+현재 변경된 코드의 엣지 케이스 테스트를 작성해줘.
+반드시 포함할 것:
+- None/null 입력
+- 빈 문자열 입력
+- 허용 범위 밖의 값 입력
+테스트 작성 후 pytest를 실행하고 모두 통과할 때까지 수정해줘.
+```
+
+Skills가 강력한 이유:
+- 한 번 만들면 팀 전체가 `/review`, `/test-edge`로 동일한 기준 적용
+- CLAUDE.md의 규칙을 Skills에서 명시적으로 참조 → **규칙이 실행된다**
+- git에 커밋하면 팀 자산이 된다
+
+---
+
+## 더 나아가면: MCP로 팀 전체에 배포
+
+| 단계 | 방식 | 적용 대상 |
+|---|---|---|
+| **1단계 (오늘)** | `.claude/commands/*.md` | 개인 또는 이 프로젝트 |
+| **2단계** | 팀 레포에 `.claude/` 폴더 체크인 | 팀 내 모든 멤버 |
+| **3단계** | npm 패키지로 Skills + Rules 배포 | 팀 전체, IDE 무관 |
+
+```
+# 3단계: npm install 한 줄로 팀 전체에 전파
+npm install @our-team/mcp-agent
+```
+
+"공유"가 아니라 "설치"로 전파되는 순간, 팀 AI 품질이 균등해집니다.
 
 ---
 
@@ -69,46 +131,46 @@ import { Callout, Steps } from 'nextra/components'
 
 ---
 
-## Phase 2: 프롬프트 템플릿 설계 + CLAUDE.md 등록 (60분)
+## Phase 2: Skills 파일 만들기 + CLAUDE.md 등록 (60분)
 
 <Steps>
-### 프롬프트 템플릿 작성
+### Skills 파일로 명령어화
 
-Claude가 분석한 패턴을 바탕으로 재사용 가능한 템플릿을 만듭니다:
+분석한 반복 패턴을 `.claude/commands/{작업명}.md`에 저장합니다:
 
 ```markdown
-## {작업명} 프롬프트 템플릿
+# .claude/commands/{작업명}.md
+# Claude Code에서 /{작업명}으로 실행
 
-입력:
-- {입력 변수 1}: {설명}
-- {입력 변수 2}: {설명}
+{반복 작업의 구체적인 요청 내용}
 
-요청:
-{구체적인 요청 내용}
+반드시 지킬 것:
+- {규칙 1}
+- {규칙 2}
 
-형식:
-{출력 형식 명세}
-
-규칙:
-- {반드시 지킬 규칙 1}
-- {반드시 지킬 규칙 2}
+완료 후:
+- {검증 방법}
 ```
 
-### CLAUDE.md에 등록
+파일을 만들면 즉시 `/{작업명}` 슬래시 명령어로 실행 가능합니다.
+
+### CLAUDE.md에 Skills 목록 등록
+
+어떤 Skills가 있는지 팀원이 알 수 있도록 CLAUDE.md에 기록합니다:
 
 ```markdown
-## 반복 작업 템플릿
+## 팀 Skills (`.claude/commands/`)
 
-### {작업명}
-{위에서 만든 프롬프트 템플릿}
+- `/review` — PR 전 코드 리뷰 체크리스트 실행
+- `/{작업명}` — {이 명령어가 하는 일 1줄}
 ```
 
 ### 샘플 3회 실행 테스트
 
-새 입력 3개로 템플릿을 실행하고 결과를 비교:
+새 입력 3개로 Skills 명령어를 실행하고 결과를 비교:
 - 매번 결과 품질이 일관한가?
-- 예상과 다른 출력이 있는가?
-- 있다면 템플릿을 수정하고 재실행
+- CLAUDE.md 규칙이 반영됐는가?
+- 예상과 다른 출력이 있으면 Skills 파일을 수정하고 재실행
 </Steps>
 
 ---

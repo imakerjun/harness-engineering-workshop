@@ -1,0 +1,54 @@
+---
+title: 조현석 — 팀 Context 관리
+---
+
+# 조현석 — MCP stdio로 팀 Context 중앙화
+
+**조현석** | [흩어져 있는 AI 자산, 'MCP stdio'로 헤쳐모여!](https://techblog.woowahan.com/25986/) | 우아한형제들 기술 블로그, 2026.03
+
+---
+
+## 문제: 잘 쓰는 사람의 노하우가 퍼지지 않는다
+
+- 프롬프트, 스킬, 규칙이 개인 메모장에 흩어져 있음
+- "공유"는 했지만, 다른 사람이 그대로 재현하기 어려움
+- IDE가 바뀌면 자산도 사라짐
+
+## 해결: "공유가 아니라 설치로 전파"
+
+팀의 AI 자산을 하나의 npm 패키지로:
+
+```
+central-mcp-agent/
+├── src/
+│   ├── prompts/      # 팀 공용 프롬프트
+│   ├── skills/       # 재사용 가능한 커스텀 명령어
+│   ├── rules/        # 코드 컨벤션, 리뷰 규칙 (CLAUDE.md)
+│   └── index.ts      # MCP stdio 서버
+└── package.json
+```
+
+`npm install @our-team/mcp-agent` 한 줄로 Cursor든 Claude Code든 동일한 컨텍스트로 시작.
+
+| | 기존 방식 | MCP stdio |
+|---|---|---|
+| 공유 방식 | 문서로 공유 → 각자 복사 | `npm install` → 자동 적용 |
+| 버전 관리 | 없음 | npm 버전으로 이력 추적 |
+| IDE 종속 | Cursor rules, Copilot instructions 각각 | IDE 무관 |
+
+---
+
+## 하네스 연결
+
+CLAUDE.md를 개인이 유지하는 단계를 넘어 **팀 자산으로 패키지화**하는 것이 Context 축의 확장형이다.
+
+이 워크숍의 블록 2-1에서 개인 CLAUDE.md를 만들고, 블록 3 카드 B에서 반복 작업을 프롬프트 템플릿으로 만드는 것은 — 이 사례가 보여주는 방향의 첫 단계다.
+
+`rules/` 폴더는 CLAUDE.md의 팀 버전이고, `skills/` 폴더는 카드 B에서 만드는 프롬프트 템플릿의 패키지 버전이다.
+
+---
+
+## 연결된 세션
+
+- [블록 2-1 Context Engineering](/block2/context) — CLAUDE.md 개인→팀 확장
+- [블록 3 카드 B — 반복 작업 자동화](/block3/card-b) — Skills 패키지화의 시작

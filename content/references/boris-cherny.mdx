@@ -1,0 +1,38 @@
+---
+title: Boris Cherny — Claude Code 워크플로우
+---
+
+# Boris Cherny — Claude Code 워크플로우
+
+**Boris Cherny** | [How Boris Uses Claude Code](https://howborisusesclaudecode.com) | 2026
+
+Claude Code를 만든 사람이 직접 공개한 워크플로우. 이 워크숍의 실습 설계가 직접적으로 참조한 자료다.
+
+---
+
+## Plan 축에 대한 원칙
+
+> *"When the goal is to write a Pull Request, I use Plan mode and go back and forth with Claude until I like its plan. From there, I switch into auto-accept edits mode and Claude can usually 1-shot it. A good plan is really important!"*
+
+계획이 충분히 구체화되기 전에 실행 모드로 전환하지 않는다. 이것이 블록 2-2 Plan 세션의 핵심이다.
+
+## Verify 축에 대한 원칙
+
+> *"Give Claude a way to verify its work. If Claude has that feedback loop, it will 2-3x the quality of the final result."*
+
+AI에게 자기 결과를 확인할 방법을 주는 것이 품질을 2~3배 높인다. 블록 2-3 Verification Loop 세션의 설계 근거다.
+
+## Context 축에 대한 원칙 — Compounding Engineering
+
+> *"Each team at Anthropic maintains a CLAUDE.md in git to document mistakes, so Claude can improve over time, and best practices, such as style conventions, design guidelines, PR template."*
+
+CLAUDE.md에 실수를 누적하면 팀 전체의 AI 품질이 복리로 올라간다. 블록 2-1 Context 세션, 그리고 모든 세션의 완료 체크에서 "CLAUDE.md 업데이트"를 강조하는 이유다.
+
+---
+
+## 연결된 세션
+
+- [블록 2-1 Context Engineering](/block2/context) — Compounding Engineering
+- [블록 2-2 Plan-based Execution](/block2/plan) — Plan Mode 실습
+- [블록 2-3 Verification Loop](/block2/verify) — 품질 2~3배
+- [블록 4 마무리](/block4) — 핵심 3가지 정리
