@@ -2,11 +2,13 @@
 title: 2-5 Multi-Agent Orchestration
 ---
 
-import { Callout, Steps } from 'nextra/components'
+import { Callout, Steps, Tabs } from 'nextra/components'
 
 # 2-5: Multi-Agent Orchestration
 
-> **역할을 나누는 힘 — "한 에이전트에 다 맡기지 않기"**
+> **심화 | 블록 2 선택 학습**
+>
+> 역할을 나누는 힘 — "한 에이전트에 다 맡기지 않기"
 
 ## 한 명에게 다 맡기면 생기는 일
 
@@ -114,11 +116,11 @@ flowchart LR
 
 ---
 
-## 5가지 토픽이 합류하는 지점
+## 5가지 축이 합류하는 지점
 
 멀티 에이전트는 앞의 4가지가 모두 모이는 형태입니다:
 
-| 토픽 | 멀티에이전트에서의 역할 |
+| 축 | 멀티에이전트에서의 역할 |
 |---|---|
 | **2-1 Context** | 에이전트 간 전달할 컨텍스트를 좁게 정의 |
 | **2-2 Plan** | Plan Agent가 계획, 나머지는 실행·검증만 |
@@ -143,21 +145,42 @@ flowchart LR
 
 `sds-harness-lab`에서 새 기능을 추가하는 작업을 **두 세션**으로 나눕니다:
 
-**세션 A — Plan만**
-```
-Shift+Tab (Plan Mode)
-새 태스크: complete_task 기능에 완료 날짜 기록을 추가해줘.
-계획만 보여줘. 코드는 아직 쓰지 마.
-```
-계획을 파일로 저장: `plan.md`
+<Tabs items={['Claude Code', 'AI Pro']}>
+  <Tabs.Tab>
+    **세션 A — Plan만** (`Shift+Tab` → Plan Mode)
+    ```
+    complete_task 기능에 완료 날짜 기록을 추가해줘.
+    계획만 보여줘. 코드는 아직 쓰지 마.
+    ```
+    계획을 파일로 저장: `plan.md`
 
-**세션 B — Review만 (새 세션)**
-```
-@plan.md와 변경된 코드만 보고 리뷰해줘.
-구현 과정은 설명하지 않을게.
-- 계획과 실제 구현이 일치하는가?
-- 놓친 엣지 케이스가 있는가?
-```
+    **세션 B — Review만 (새 세션)**
+    ```
+    @plan.md와 변경된 코드만 보고 리뷰해줘.
+    구현 과정은 설명하지 않을게.
+    - 계획과 실제 구현이 일치하는가?
+    - 놓친 엣지 케이스가 있는가?
+    ```
+  </Tabs.Tab>
+  <Tabs.Tab>
+    **Chat 모드 — Plan만**
+    ```
+    complete_task 기능에 완료 날짜 기록을 추가해줘.
+    먼저 계획만 보여줘. 코드는 쓰지 마.
+    ```
+    계획을 메모에 저장.
+
+    **새 Chat — Review만**
+    ```
+    [계획 내용 붙여넣기]
+    [변경된 코드 붙여넣기]
+
+    위 계획과 코드만 보고 리뷰해줘.
+    - 계획과 실제 구현이 일치하는가?
+    - 놓친 엣지 케이스가 있는가?
+    ```
+  </Tabs.Tab>
+</Tabs>
 
 ### 비교 (5분)
 
