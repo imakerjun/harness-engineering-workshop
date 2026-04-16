@@ -6,7 +6,7 @@ import { Callout, Cards } from 'nextra/components'
 
 # 블록 2: 하네스 엔지니어링 실습
 
-> **10:00~13:00 | 3시간 | 세션 3개 × 60분**
+> **10:00~13:00 | 3시간 | 5개 세션**
 
 ## 바이브 코딩 vs 에이전틱 엔지니어링
 
@@ -58,7 +58,7 @@ flowchart LR
     A5 -.악순환.-> A1
 ```
 
-**5가지는 하나의 뿌리: 하네스가 없다는 것.** 오늘 3세션에서 하나씩 해결한다.
+**5가지는 하나의 뿌리: 하네스가 없다는 것.** 오늘 5세션에서 하나씩 해결한다.
 
 <details>
 <summary>📋 자가 진단 — 지금 내 상태는?</summary>
@@ -74,7 +74,7 @@ flowchart LR
 
 ---
 
-## 오늘 배우는 3축
+## 오늘 배우는 5축
 
 <Cards>
   <Cards.Card
@@ -89,16 +89,28 @@ flowchart LR
     title="2-3 Verification Loop →"
     href="/block2/verify"
   />
+  <Cards.Card
+    title="2-4 Token Optimization →"
+    href="/block2/token"
+  />
+  <Cards.Card
+    title="2-5 Multi-Agent →"
+    href="/block2/multi-agent"
+  />
 </Cards>
 
-| 축 | 핵심 질문 | Boris Cherny 원칙 |
+| 축 | 핵심 질문 | 원칙 |
 |---|---|---|
-| **Context** | AI에게 어떤 맥락을 줄 것인가 | CLAUDE.md로 팀 컨벤션 주입 |
-| **Plan** | 실행 전 계획을 사람이 검토하는가 | Plan Mode → 계획 승인 → Auto-accept |
-| **Verify** | AI가 스스로 결과를 확인하는가 | Verification Loop = 품질 2~3배 |
+| **2-1 Context** | AI에게 어떤 맥락을 줄 것인가 | CLAUDE.md로 팀 컨벤션 주입 |
+| **2-2 Plan** | 실행 전 계획을 사람이 검토하는가 | Plan Mode → 계획 승인 → Auto-accept |
+| **2-3 Verify** | AI가 스스로 결과를 확인하는가 | Verification Loop = 품질 2~3배 |
+| **2-4 Token** | 길어질수록 정확도가 떨어지는가 | 압축·분할·격리로 컨텍스트 관리 |
+| **2-5 Multi-Agent** | 한 에이전트에 모든 역할을 맡기는가 | 역할 분리 = 컨텍스트 분리 |
 
-> 출처: Boris Cherny (Claude Code 창시자),
-> [How Boris Uses Claude Code](https://howborisusesclaudecode.com) (2026)
+5가지는 독립적인 기술이 아닙니다. **멀티에이전트는 앞의 4가지가 잘 갖춰졌을 때 자연스럽게 도달하는 형태**입니다.
+
+> 출처: Birgitta Böckeler, [Harness engineering for coding agent users](https://martinfowler.com/articles/harness-engineering.html) (Thoughtworks, 2026)
+> · Boris Cherny, [How Boris Uses Claude Code](https://howborisusesclaudecode.com) (2026)
 
 ---
 
