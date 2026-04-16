@@ -1,0 +1,128 @@
+---
+title: 참고 자료
+---
+
+import { Callout } from 'nextra/components'
+
+# 참고 자료
+
+이 교육 커리큘럼에서 인용한 모든 자료의 원문 출처입니다.
+
+<Callout type="info">
+인용한 내용은 각 세션 페이지에서 블록 인용문(>) 형태로 표시되며, 출처 링크가 함께 제공됩니다.
+</Callout>
+
+---
+
+## 하네스 엔지니어링 (핵심 프레임워크)
+
+### Birgitta Böckeler — Harness Engineering for Coding Agent Users
+
+> *"The performance of an agent is determined not just by the model, but by the harness around it."*
+
+- **제목**: [Harness engineering for coding agent users](https://martinfowler.com/articles/harness-engineering.html)
+- **게재처**: Martin Fowler's bliki (Thoughtworks)
+- **날짜**: 2026년 2월
+- **주요 개념**: Agent = Model + Harness, 5축 하네스 프레임워크 (Context, Plan, Token, Quality, Multi-agent)
+- **교육 내 인용**: 홈페이지, 블록 2 개요
+
+---
+
+## Boris Cherny — Claude Code 워크플로우
+
+### How Boris Uses Claude Code
+
+> *"A good plan handed to Claude is basically free — a bad plan wastes hours."*
+
+> *"Give Claude a way to verify its work. If Claude has that feedback loop, it will 2-3x the quality of the final result."*
+
+- **제목**: [How Boris Uses Claude Code](https://howborisusesclaudecode.com)
+- **저자**: Boris Cherny (Claude Code 창시자, Anthropic)
+- **날짜**: 2026
+- **주요 개념**: Plan Mode 활용, Verification Loop, CLAUDE.md 컴파운딩 패턴
+- **교육 내 인용**: 블록 2-2 (Plan), 블록 2-3 (Verify), 블록 4 마무리
+
+---
+
+## Andrej Karpathy — AI 활용 철학
+
+### Andrej Karpathy on Vibe Coding
+
+> *"It's not really coding — I completely give in to the vibes, embrace exponentials, and forget that the code even exists."*
+
+> *"Fully [give in] to the vibes, embrace exponentials, and forget that the code even exists."*
+
+- **저자**: Andrej Karpathy (전 Tesla AI 총괄, OpenAI 공동창업자)
+- **출처**: [X (Twitter) 포스트](https://x.com/karpathy/status/1886192184808149070) (2025.02)
+- **주요 개념**: Vibe Coding — 의도와 방향을 AI와 공명시키는 개발 방식
+- **교육 내 인용**: 블록 2-1 (Context) — AI에게 의도를 어떻게 전달하는가
+
+---
+
+## Anthropic — 공식 교육 자료
+
+### Claude Code in Action
+
+- **제목**: [Claude Code in Action](https://anthropic.skilljar.com/claude-code-in-action)
+- **게재처**: Anthropic Skilljar
+- **날짜**: 2026
+- **주요 개념**: TDD × 에이전트 패턴, Verification Loop 실습
+- **교육 내 인용**: 블록 2-3 (Verify)
+
+### CLAUDE.md 공식 문서
+
+- **제목**: [Claude Code — CLAUDE.md](https://docs.anthropic.com/claude/docs/claude-md)
+- **게재처**: Anthropic Docs
+- **주요 개념**: CLAUDE.md 구조, 컨텍스트 레이어 설계
+- **교육 내 인용**: 블록 2-1 (Context)
+
+---
+
+## 우아한형제들 — 실무 적용 사례
+
+### 강규한 — AI와 함께하는 테스트 자동화
+
+> 백엔드 팀이 AI에게 10개 클래스 테스트 생성을 맡겼을 때 **컴파일 성공률: 10%**.
+> AI의 문제가 아니라 하네스의 부재.
+
+- **제목**: [AI와 함께하는 테스트 자동화: 플러그인 개발기](https://techblog.woowahan.com/24568/)
+- **저자**: 강규한 (우아한형제들)
+- **게재처**: 우아한형제들 기술 블로그
+- **날짜**: 2025년 12월
+- **교육 내 인용**: 홈페이지 (하네스 필요성 사례)
+
+### 조현석 — MCP stdio로 AI 자산 공유
+
+> *"공유가 아니라 설치로 전파"*
+
+- **제목**: [흩어져 있는 AI 자산, 'MCP stdio'로 헤쳐모여!](https://techblog.woowahan.com/25986/)
+- **저자**: 조현석 (우아한형제들)
+- **게재처**: 우아한형제들 기술 블로그
+- **날짜**: 2026년 3월
+- **주요 개념**: MCP stdio를 통한 팀 AI 자산(프롬프트, 규칙) npm 패키지화
+- **교육 내 인용**: 블록 3 카드 B (반복 작업 자동화)
+
+---
+
+## 성인 학습 이론
+
+### Malcolm Knowles — Andragogy (성인 학습 원리)
+
+> 성인은 **자신의 필요를 인식할 때** 학습 동기가 생긴다. 원리보다 문제가 먼저여야 한다.
+
+- **저자**: Malcolm Knowles
+- **출처**: *The Modern Practice of Adult Education: Andragogy versus Pedagogy* (1970)
+- **주요 개념**: 자기주도 학습, 경험 기반 학습, 문제 중심 접근
+- **교육 내 인용**: 블록 1 (불편함 뽑기 — 왜 문제를 먼저 발견하는가)
+
+---
+
+## 교육 설계 참고
+
+| 자료 | 저자/출처 | 활용 포인트 |
+|---|---|---|
+| [Harness Engineering](https://martinfowler.com/articles/harness-engineering.html) | Böckeler, Thoughtworks | 3축 프레임워크 전체 |
+| [How Boris Uses Claude Code](https://howborisusesclaudecode.com) | Boris Cherny | Plan Mode, Verify Loop |
+| [Claude Code in Action](https://anthropic.skilljar.com/claude-code-in-action) | Anthropic | TDD × 에이전트 |
+| [AI와 함께하는 테스트 자동화](https://techblog.woowahan.com/24568/) | 강규한 | 컴파일 성공률 10% 사례 |
+| [MCP stdio로 AI 자산 공유](https://techblog.woowahan.com/25986/) | 조현석 | 팀 자산화 사례 |

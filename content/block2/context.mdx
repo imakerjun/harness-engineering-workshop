@@ -1,0 +1,139 @@
+---
+title: 2-1 Context Engineering
+---
+
+import { Callout, Steps, Tabs } from 'nextra/components'
+
+# 2-1: Context Engineering
+
+> **10:00~11:00 | 강의 20분 + 실습 40분**
+
+## 왜 컨텍스트인가
+
+> *"Context engineering is the art of providing the right information, in the right format, at the right time, so the model can do useful work."*
+>
+> — Andrej Karpathy, [X (Twitter)](https://x.com/karpathy) (2025)
+
+AI가 엉뚱한 코드를 생성하는 이유:
+
+1. **팀 컨벤션을 모른다** — Kotest? JUnit? given-when-then? 알려주지 않으면 추측한다
+2. **코드베이스 경계를 모른다** — 어떤 클래스가 실제로 있는지, 어떤 패턴을 쓰는지 모른다
+3. **완료 기준을 모른다** — 사람이 정의하지 않으면 AI가 스스로 낮은 기준을 만든다
+
+해결책: **CLAUDE.md** — AI에게 주는 팀 설명서.
+
+> Boris Cherny(Claude Code 창시자):
+> *"Each team at Anthropic maintains a CLAUDE.md in git to document mistakes, so Claude can improve over time, and best practices, such as style conventions, design guidelines, PR template."*
+>
+> 출처: [How Boris Uses Claude Code](https://howborisusesclaudecode.com) (2026)
+
+---
+
+## 컨텍스트 계층
+
+| 계층 | 위치 | 용도 |
+|---|---|---|
+| **전역** | `~/.claude/CLAUDE.md` | 내 개인 규칙 (모든 프로젝트 적용) |
+| **프로젝트** | `./CLAUDE.md` | 팀 컨벤션 (이 프로젝트에만 적용) |
+| **세션** | 대화 중 입력 | 일회성 지시 |
+
+<Tabs items={['Claude Code', 'AI Pro']}>
+  <Tabs.Tab>
+    프로젝트 루트에 `CLAUDE.md` 파일을 두면 Claude Code가 자동으로 읽습니다.
+    ```bash
+    # 프로젝트 루트에서
+    touch CLAUDE.md
+    claude  # CLAUDE.md를 자동으로 로드
+    ```
+  </Tabs.Tab>
+  <Tabs.Tab>
+    AI Pro의 **Rules 파일** = CLAUDE.md와 동일한 역할입니다.
+    Settings → Rules → 프로젝트 규칙 추가
+  </Tabs.Tab>
+</Tabs>
+
+---
+
+## CLAUDE.md 핵심 구성
+
+```markdown
+# CLAUDE.md
+
+## 프로젝트 개요
+(이 프로젝트가 무엇을 하는지 1~2줄)
+
+## 기술 스택
+- Python 3.11 / FastAPI / pytest
+- 테스트 실행: `python3 -m pytest tests/ -v`
+
+## 코딩 컨벤션
+- 함수명: snake_case
+- 반환 형식: dict (to_dict() 메서드 활용)
+- 에러: HTTPException 사용
+
+## 절대 하지 말 것
+- 테스트 없이 PR 생성 금지
+- status 필드에 허용 목록 외 값 입력 금지
+  (허용: todo, in_progress, done, archived)
+
+## 자주 하는 실수
+(실습 중 발견할 때마다 여기에 추가)
+```
+
+<Callout type="info">
+**Compounding Engineering**: Boris Cherny의 핵심 원칙.
+Claude가 실수할 때마다 CLAUDE.md에 추가하면, 같은 실수가 반복되지 않는다.
+팀 전체가 AI 실수를 공유하고 누적하면 팀 전체의 AI 품질이 올라간다.
+</Callout>
+
+---
+
+## 실습 (40분)
+
+<Steps>
+### Step 1 — CLAUDE.md 없이 실행 (10분)
+
+`sds-harness-lab` 디렉터리에서 Claude Code를 열고 실행:
+
+```
+이 프로젝트의 전체 구조를 파악하고,
+처음 투입된 개발자가 읽을 수 있는 README.md를 작성해줘.
+```
+
+결과를 저장하세요 (스크린샷 또는 복사).
+
+### Step 2 — CLAUDE.md 작성 (15분)
+
+`sds-harness-lab/CLAUDE.md`를 **직접** 채우세요. AI에게 맡기지 않고, 코드를 읽으면서 작성합니다.
+
+반드시 포함할 항목:
+- [ ] 프로젝트 목적 (1줄)
+- [ ] 테스트 실행 명령어
+- [ ] 금지 사항 1개 이상 (코드를 읽고 발견한 것)
+
+### Step 3 — 동일 프롬프트 재실행 (10분)
+
+Step 1과 **완전히 동일한 프롬프트**를 다시 실행합니다.
+
+비교:
+- 무엇이 달라졌나?
+- CLAUDE.md에 없는 정보인데 결과에 영향을 준 게 있나?
+
+### Step 4 — 페어 리뷰 (5분)
+
+CLAUDE.md를 교환하고 읽어보세요:
+- [ ] 이것만 보고 프로젝트 목적을 이해할 수 있나?
+- [ ] "절대 하지 말 것"이 구체적인가?
+- [ ] 테스트 실행 방법이 명확한가?
+</Steps>
+
+---
+
+<Callout>
+**세션 완료 체크**
+- [ ] CLAUDE.md가 `sds-harness-lab/` 루트에 있다
+- [ ] "절대 하지 말 것" 항목이 1개 이상 있다
+- [ ] Before/After 차이를 말로 설명할 수 있다
+
+다음: [2-2 Plan-based Execution →](/block2/plan)
+</Callout>

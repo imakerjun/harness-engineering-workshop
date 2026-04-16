@@ -1,0 +1,132 @@
+---
+title: 2-2 Plan-based Execution
+---
+
+import { Callout, Steps, Tabs } from 'nextra/components'
+
+# 2-2: Plan-based Execution
+
+> **11:00~12:00 | 강의 20분 + 실습 40분**
+
+## 왜 계획이 먼저인가
+
+> *"When the goal is to write a Pull Request, I use Plan mode and go back and forth with Claude until I like its plan. From there, I switch into auto-accept edits mode and Claude can usually 1-shot it. A good plan is really important!"*
+>
+> — Boris Cherny, [How Boris Uses Claude Code](https://howborisusesclaudecode.com) (2026)
+
+계획 없이 실행하면:
+- AI가 "어떻게 하면 좋을지" 스스로 추측한다
+- 추측이 틀리면 전체를 다시 해야 한다
+- 예상치 못한 파일이 변경된다
+
+좋은 계획이 있으면:
+- 범위가 명확하다 → 예상치 못한 변경이 없다
+- 순서가 정해진다 → 중간에 방향을 잃지 않는다
+- 검증 기준이 있다 → "완료"가 명확하다
+
+---
+
+## Plan Mode 사용법
+
+<Tabs items={['Claude Code', 'AI Pro']}>
+  <Tabs.Tab>
+    ```
+    Shift + Tab  →  Plan Mode 진입
+    ```
+
+    Plan Mode에서:
+    1. 요구사항 입력
+    2. Claude가 계획 생성
+    3. **계획 검토** (범위 / 순서 / 검증 방법)
+    4. 수정 요청 또는 승인
+    5. 승인 후 → Auto-accept 모드로 전환하여 실행
+  </Tabs.Tab>
+  <Tabs.Tab>
+    AI Pro의 계획 검토 기능을 사용합니다.
+    요구사항 입력 → 계획 생성 → 검토 후 승인 → 실행
+  </Tabs.Tab>
+</Tabs>
+
+---
+
+## 좋은 계획 vs 나쁜 계획
+
+| 좋은 계획 | 나쁜 계획 |
+|---|---|
+| 변경할 파일 목록이 명시됨 | "관련 파일을 수정합니다" |
+| 변경 순서가 논리적 | 순서 없이 나열 |
+| 완료 확인 방법 포함 | 검증 방법 없음 |
+| 건드리지 않을 파일도 명시 | 범위 불명확 |
+
+계획이 마음에 들지 않으면 **승인 전에 수정 요청**하세요:
+
+```
+파일 변경 범위를 app/routers/projects.py와
+app/services/project_service.py로만 제한해줘.
+그리고 완료 후 어떻게 검증할지 계획에 추가해줘.
+```
+
+---
+
+## 실습: Plan O/X 비교 (40분)
+
+**동일한 요구사항**으로 두 가지 방식을 비교합니다.
+
+> **요구사항**: 프로젝트 생성(POST /projects) 시 아래 규칙을 적용하라
+> - `name`은 필수이며 빈 문자열을 허용하지 않는다
+> - `status`는 `todo`, `in_progress`, `done`, `archived` 중 하나여야 한다
+> - 위반 시 400 Bad Request + 구체적인 에러 메시지 반환
+
+<Steps>
+### 방식 A — Plan 없이 바로 실행 (15분)
+
+```
+프로젝트 생성 시 입력값 유효성 검증을 추가해줘.
+name은 필수, status는 허용된 값만 받아야 해.
+```
+
+실행 후 기록:
+- 변경된 파일 목록:
+- 예상치 못한 변경이 있었나?
+- 기존 동작이 깨진 게 있나?
+
+<Callout type="warning">
+방식 B 전에 변경사항을 되돌립니다:
+```bash
+git checkout .
+```
+</Callout>
+
+### 방식 B — Plan Mode 먼저 (20분)
+
+`Shift + Tab`으로 Plan Mode 진입 후 동일한 요구사항 입력.
+
+계획이 나오면 **실행 전에** 확인:
+
+- [ ] 변경할 파일 목록이 명시됐나?
+- [ ] 변경 순서가 논리적인가?
+- [ ] 완료를 어떻게 확인할지 포함됐나?
+- [ ] 건드리지 말아야 할 파일을 건드리진 않나?
+
+계획 승인 후 실행.
+
+### 비교 (5분)
+
+| | 방식 A | 방식 B |
+|---|---|---|
+| 변경된 파일 수 | | |
+| 예상치 못한 변경 | | |
+| 재작업 필요 여부 | | |
+| 결과 예측 가능성 | | |
+</Steps>
+
+---
+
+<Callout>
+**세션 완료 체크**
+- [ ] Plan Mode 진입 방법을 안다 (Shift+Tab)
+- [ ] 계획에서 "검증 방법"이 없을 때 추가 요청할 수 있다
+- [ ] 두 방식의 차이를 한 문장으로 설명할 수 있다
+
+다음: [2-3 Verification Loop →](/block2/verify)
+</Callout>

@@ -1,0 +1,122 @@
+---
+title: 사전 준비
+---
+
+import { Callout, Steps, Tabs } from 'nextra/components'
+
+# 사전 준비
+
+<Callout type="warning">
+교육 **전날까지** 완료해주세요. 당일 설치에 시간을 쓰면 실습 시간이 줄어듭니다.
+</Callout>
+
+## 1. Claude Code 설치
+
+<Tabs items={['Claude Code 사용자', 'AI Pro 사용자']}>
+  <Tabs.Tab>
+    <Steps>
+      ### Node.js 18 이상 확인
+      ```bash
+      node --version
+      ```
+
+      ### Claude Code 설치
+      ```bash
+      npm install -g @anthropic-ai/claude-code
+      ```
+
+      ### 설치 확인
+      ```bash
+      claude --version
+      ```
+
+      ### 인증
+      ```bash
+      claude
+      # 브라우저가 열리면 Anthropic 계정으로 로그인
+      ```
+    </Steps>
+  </Tabs.Tab>
+  <Tabs.Tab>
+    <Callout type="info">
+      AI Pro는 별도 설치 없이 기존 환경 그대로 참여 가능합니다.
+      각 세션에서 "AI Pro에서는 이렇게" 매핑을 제공합니다.
+
+      | Claude Code | AI Pro |
+      |---|---|
+      | CLAUDE.md | Rules 파일 |
+      | Plan Mode (Shift+Tab) | 계획 검토 기능 |
+      | `/` 커스텀 명령어 | Skills |
+    </Callout>
+  </Tabs.Tab>
+</Tabs>
+
+---
+
+## 2. 실습 코드베이스 준비
+
+```bash
+git clone https://github.com/imakerjun/sds-harness-lab
+cd sds-harness-lab
+pip install -r requirements.txt
+```
+
+서버 실행 확인:
+
+```bash
+uvicorn app.main:app --reload
+# → http://localhost:8000/health 접속 후 {"status":"ok"} 확인
+```
+
+테스트 실행 확인:
+
+```bash
+python3 -m pytest tests/ -v
+# → "0 tests ran" 이 정상 (테스트가 아직 없음)
+```
+
+<Callout type="info">
+**이 코드베이스는 의도적으로 불완전합니다.** 테스트 없음, 문서 없음, 입력값 검증 없음 — 이것이 오늘 실습의 소재입니다.
+</Callout>
+
+---
+
+## 3. CLAUDE.md 위치 확인
+
+```bash
+ls sds-harness-lab/CLAUDE.md
+# → 파일이 있고 비어있으면 정상
+```
+
+오늘 교육에서 이 파일을 직접 채워나갑니다.
+
+---
+
+## 코드베이스 구조 미리보기
+
+```
+sds-harness-lab/
+├── CLAUDE.md              ← 오늘 우리가 채울 파일
+├── requirements.txt
+├── app/
+│   ├── main.py            ← FastAPI 앱 진입점
+│   ├── models.py          ← 데이터 모델 (Project, Task)
+│   ├── database.py        ← 인메모리 저장소
+│   ├── routers/
+│   │   ├── projects.py    ← 프로젝트 API 엔드포인트
+│   │   └── tasks.py       ← 할일 API 엔드포인트
+│   └── services/
+│       ├── project_service.py
+│       └── task_service.py
+└── tests/                 ← 지금은 비어있음
+```
+
+**의도적 결함 목록** (실습에서 발견하고 수정할 것):
+
+| 위치 | 결함 | 실습 세션 |
+|---|---|---|
+| `services/project_service.py` | 없는 ID 조회 시 500 반환 | 블록 2-3 |
+| `routers/projects.py` | 입력값 검증 없음 | 블록 2-2 |
+| `database.py` | 완료된 프로젝트에 할일 추가 가능 | 블록 3 카드 C |
+| `services/` 전체 | 중복 로직 | 블록 3 카드 A |
+| `tests/` | 테스트 없음 | 블록 2-3, 블록 3 |
