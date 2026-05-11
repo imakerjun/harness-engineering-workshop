@@ -1,0 +1,148 @@
+---
+title: 도구 비교 — Claude Code vs Codex
+---
+
+import { Callout } from 'nextra/components'
+
+# 도구 비교 — Claude Code vs Codex
+
+> 워크숍에서 사용하는 두 CLI 에이전트의 위치 차이를 공식 문서 기준으로 정리합니다.
+
+<Callout type="info" emoji="📚">
+**이 페이지의 원칙**
+- 인용은 공식 문서 (`code.claude.com`, `github.com/openai/codex`, `developers.openai.com/codex`) 에서만 가져옵니다.
+- 추측·세컨더리 자료는 배제. 변경되기 쉬운 가격·정책은 의도적으로 다루지 않습니다.
+- 워크숍 흐름에서 "이 도구는 무엇이 다른가"를 1분 안에 잡기 위한 비교 표입니다.
+</Callout>
+
+---
+
+## 🎯 한 줄 정의
+
+| 도구 | 공식 정의 |
+|---|---|
+| **Claude Code** | *"agentic coding tool that reads your codebase, edits files, runs commands, and integrates with your development tools. Available in your terminal, IDE, desktop app, and browser."* |
+| **Codex CLI** | *"Lightweight coding agent that runs in your terminal."* |
+
+출처: [code.claude.com/docs/en/overview](https://code.claude.com/docs/en/overview) · [github.com/openai/codex](https://github.com/openai/codex)
+
+---
+
+## 🏷️ 한눈에 보기
+
+| 축 | Claude Code | Codex CLI |
+|---|---|---|
+| **제공사** | Anthropic | OpenAI |
+| **라이선스** | Proprietary (Claude 구독 / API 키) | Apache-2.0 (오픈소스) |
+| **실행 표면** | Terminal · VS Code · JetBrains · Desktop · Web | Terminal (CLI) + VS Code/Cursor/Windsurf 확장 + ChatGPT Codex Web |
+| **설치 (CLI)** | `curl -fsSL https://claude.ai/install.sh \| bash` 또는 `brew install --cask claude-code` | `npm install -g @openai/codex` 또는 `brew install --cask codex` |
+| **진입 명령** | `claude` | `codex` |
+
+출처: [code.claude.com/docs/en/overview](https://code.claude.com/docs/en/overview) · [github.com/openai/codex#install](https://github.com/openai/codex)
+
+---
+
+## 🧠 컨텍스트 파일
+
+| 항목 | Claude Code | Codex CLI |
+|---|---|---|
+| **파일명** | `CLAUDE.md` | `AGENTS.md` |
+| **로드 시점** | "Claude Code reads at the start of every session" | 세션 시작 시 자동 로드 |
+| **계층** | 프로젝트 루트 · 하위 디렉터리 · `~/.claude` 글로벌 | 프로젝트 루트 · 글로벌 (계층적) |
+| **자동 메모리** | "Claude also builds **auto memory** as it works, saving learnings... across sessions" | (수동 작성 위주) |
+
+출처: [code.claude.com/docs/en/memory](https://code.claude.com/docs/en/memory) · [github.com/openai/codex](https://github.com/openai/codex)
+
+<Callout emoji="💡">
+**워크숍 적용**: 카드 A·B·C 실습에서 동일한 패턴(`자주 하는 실수`, `건드리지 말 것`, `완료 기준`)을 **`CLAUDE.md` 또는 `AGENTS.md` 둘 다 같은 방식으로** 적용할 수 있습니다.
+</Callout>
+
+---
+
+## 🔐 명령 실행 승인 모델
+
+| 항목 | Claude Code | Codex CLI |
+|---|---|---|
+| **기본 정책** | 도구별 권한 + 위험 명령에만 사용자 승인 | 3단계 approval mode (기본 `Auto`) |
+| **모드** | 도구 단위 권한 (`Bash`, `Edit` 등 개별 설정) | **Auto** (파일 읽기·편집 가능) · **Read-only** (자문 모드) · **Full Access** (네트워크·머신 무제한) |
+| **Plan Mode** | 내장 — `Shift + Tab` 으로 토글 (파일 수정·명령 실행 차단) | "explains its plan before making a change, and approve or reject steps inline" |
+
+출처: [code.claude.com/docs/en/overview](https://code.claude.com/docs/en/overview) · [developers.openai.com/codex/cli/features](https://developers.openai.com/codex/cli/features)
+
+---
+
+## 🛠️ 사용자 정의 명령 (Skills / Slash Commands)
+
+| 항목 | Claude Code | Codex CLI |
+|---|---|---|
+| **사용자 정의 슬래시 명령** | 지원 — `.claude/commands/{이름}.md` 만들면 `/{이름}` 으로 실행 | 빌트인 슬래시 명령 위주 (사용자 정의는 `AGENTS.md` 섹션으로 우회) |
+| **Skills 패키지** | "Create skills to package repeatable workflows your team can share, like `/review-pr` or `/deploy-staging`." | Subagents 기반 워크플로 |
+| **공유 방식** | git 커밋 → 팀 자산 | git 커밋 → 팀 자산 |
+
+출처: [code.claude.com/docs/en/skills](https://code.claude.com/docs/en/skills) · [github.com/openai/codex](https://github.com/openai/codex)
+
+<Callout emoji="🛤️">
+**카드 B 차이의 핵심**: Claude Code는 `.claude/commands/*.md` 한 파일로 슬래시 명령이 만들어지지만, Codex는 `AGENTS.md` 안에 명명된 섹션을 만들고 본문에서 "AGENTS.md의 review 섹션 규칙을 적용해서…" 패턴으로 호출합니다.
+</Callout>
+
+---
+
+## 🔌 MCP (Model Context Protocol)
+
+| 항목 | Claude Code | Codex CLI |
+|---|---|---|
+| **MCP 지원** | "The Model Context Protocol (MCP) is an open standard for connecting AI tools to external data sources." (네이티브) | "connect Codex to more tools by configuring Model Context Protocol servers" (네이티브) |
+| **자동 노출** | MCP 도구가 세션 컨텍스트에 자동 추가 | "automatic tool exposure alongside built-in capabilities" |
+
+출처: [code.claude.com/docs/en/mcp](https://code.claude.com/docs/en/mcp) · [developers.openai.com/codex/cli/features](https://developers.openai.com/codex/cli/features)
+
+---
+
+## 👥 멀티 에이전트 / Sub-agents
+
+| 항목 | Claude Code | Codex CLI |
+|---|---|---|
+| **공식 표현** | "Spawn multiple Claude Code agents that work on different parts of a task simultaneously. A lead agent coordinates the work, assigns subtasks, and merges results." | "For larger tasks, Codex can spawn parallel subagent workflows, though each subagent does its own model and tool work, increasing token consumption compared to single-agent runs." |
+| **컨텍스트 격리** | Sub-agent는 별도 컨텍스트 윈도우 — context firewall 역할 | Subagent도 자체 컨텍스트 — 토큰 비용 증가 명시 |
+
+출처: [code.claude.com/docs/en/sub-agents](https://code.claude.com/docs/en/sub-agents) · [developers.openai.com/codex/cli/features](https://developers.openai.com/codex/cli/features)
+
+---
+
+## ⚙️ 자동화·스크립팅
+
+| 항목 | Claude Code | Codex CLI |
+|---|---|---|
+| **비대화형 실행** | `claude -p "프롬프트"` (Unix 파이프와 조합 가능) | `codex exec "프롬프트"` ("piping the final plan and results back to stdout") |
+| **CI/CD** | GitHub Actions · GitLab CI/CD 통합 | exec 기반 자동화 |
+
+출처: [code.claude.com/docs/en/cli-reference](https://code.claude.com/docs/en/cli-reference) · [developers.openai.com/codex/cli/features](https://developers.openai.com/codex/cli/features)
+
+---
+
+## 🧩 워크숍 흐름에서의 매핑
+
+| 워크숍 단계 | 사용 도구 | 이유 |
+|---|---|---|
+| **블록 2 — 하네스 5축 실습** | AI Pro | 5축 패턴을 도구 종속성 없이 익힘 |
+| **블록 3 카드 B — 반복 작업 자동화** | Claude Code | `.claude/commands/` 사용자 정의 슬래시 명령으로 Skills 만드는 흐름이 가장 직선적 |
+| **블록 3 카드 C — 신규 기능 추가** | Codex | `Auto` / `Read-only` 모드 전환으로 Plan → 승인 → Verify 사이클을 손에 익히기 좋음 |
+| **카드 A — 낯선 코드 파악 (자가학습)** | Claude Code / Codex 택일 | 양쪽 모두 모듈 단위 깊이 탐색에 적합 |
+
+---
+
+## 📖 공식 문서 인덱스
+
+**Claude Code (Anthropic)**
+- [Overview](https://code.claude.com/docs/en/overview)
+- [Memory / CLAUDE.md](https://code.claude.com/docs/en/memory)
+- [Skills (사용자 정의 슬래시 명령)](https://code.claude.com/docs/en/skills)
+- [Sub-agents](https://code.claude.com/docs/en/sub-agents)
+- [MCP](https://code.claude.com/docs/en/mcp)
+- [Best practices](https://www.anthropic.com/engineering/claude-code-best-practices)
+- [GitHub: anthropics/claude-code](https://github.com/anthropics/claude-code)
+
+**Codex CLI (OpenAI)**
+- [GitHub: openai/codex](https://github.com/openai/codex)
+- [Codex CLI features (Developer docs)](https://developers.openai.com/codex/cli/features)
+- Codex Web: [chatgpt.com/codex](https://chatgpt.com/codex)
