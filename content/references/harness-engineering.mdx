@@ -1,32 +1,75 @@
 ---
-title: Böckeler — 하네스 엔지니어링 프레임워크
+title: Böckeler — 하네스 엔지니어링 (원문 정리)
 ---
 
-# Böckeler — 하네스 엔지니어링 프레임워크
+# Böckeler — 하네스 엔지니어링 (원문 정리)
 
-> *"The performance of an agent is determined not just by the model, but by the harness around it — the context it receives, the plan it follows, and the feedback loops that let it self-correct."*
+> *"Engineering a user harness for a coding agent is a specific form of context engineering. (...) Whenever an issue happens multiple times, the feedforward and feedback controls should be improved to make the issue less probable to occur in the future, or even prevent it."*
 
-**Birgitta Böckeler** | [Harness engineering for coding agent users](https://martinfowler.com/articles/harness-engineering.html) | Thoughtworks, 2026년 2월
+**Birgitta Böckeler** | [Harness engineering for coding agent users](https://martinfowler.com/articles/harness-engineering.html) | Martin Fowler's *Exploring Gen AI* 시리즈, 2026년 4월 2일
 
 ---
 
 ## 이 자료가 이 워크숍의 토대인 이유
 
-이 워크숍의 핵심 프레임인 `Agent = Model + Harness`가 이 논문에서 나왔다.
+같은 모델을 쓰더라도 결과가 달라지는 이유를 **모델이 아니라 모델 주변의 환경 — 하네스**에서 찾는 관점. 이 관점을 가장 체계적으로 정리한 글이 위 글입니다.
 
-Böckeler는 같은 모델을 쓰더라도 결과가 달라지는 이유를 분석했다. 차이는 모델의 성능이 아니라, 모델 주변에 구축한 환경 — 즉 **하네스** — 에서 온다는 것이 핵심 주장입니다.
+Böckeler는 코딩 에이전트를 신뢰하려면 두 가지가 필요하다고 봅니다.
 
-논문은 하네스를 5축으로 분류한다:
+- **행동하기 전에** 에이전트를 조향한다
+- **행동한 후에** 에이전트가 스스로 교정할 수 있는 신호를 둔다
 
-| 축 | 내용 |
+---
+
+## 원문의 분류 (3축 직교 분해)
+
+Böckeler 원문은 하네스를 세 가지 직교 축으로 분해합니다. 5축이 아닙니다.
+
+### 1. 작용 방향 — Guides vs Sensors
+
+| 분류 | 정의 | 예시 |
+|---|---|---|
+| **Guides (feedforward)** | 에이전트가 행동하기 *전에* 조향 | `AGENTS.md`, 아키텍처 문서, 시스템 프롬프트 |
+| **Sensors (feedback)** | 행동한 *후에* 관찰·자가교정 | 린터 + 커스텀 에러 메시지, 테스트 스위트 |
+
+### 2. 실행 방식 — Computational vs Inferential
+
+| 분류 | 정의 |
 |---|---|
-| **Context** | AI가 받는 맥락의 품질 |
-| **Plan** | AI가 따르는 계획의 명확성 |
-| **Token** | 컨텍스트 윈도우 활용 효율 |
-| **Quality** | 결과 검증과 피드백 루프 |
-| **Multi-agent** | 에이전트 간 역할 분담 |
+| **Computational** | 결정론적, CPU 실행 (린터, 테스트) |
+| **Inferential** | 의미 분석, LLM-as-judge, AI 코드 리뷰 |
 
-이 워크숍은 즉시 효과가 큰 첫 3축(Context, Plan, Verify)에 집중합니다.
+### 3. 규율 영역 — 3 categories
+
+| 분류 | 내용 |
+|---|---|
+| **Maintainability** | 내부 코드 품질 |
+| **Architecture fitness** | Fitness Functions 기반 아키텍처 특성 점검 |
+| **Behaviour** | 기능 동작 ("the elephant in the room") |
+
+---
+
+## 이 워크숍의 5축은 워크숍 고유의 재정리입니다
+
+8시간 집합교육 흐름에 맞춰 위 분류를 다음 5축으로 재정리했습니다. **5축 자체는 Böckeler 원문에 등장하지 않습니다.**
+
+| 워크숍 5축 | 내용 | Böckeler 분류와의 매핑 |
+|---|---|---|
+| **Context** | AI가 받는 맥락의 품질 | Guides (feedforward) |
+| **Plan** | AI가 따르는 계획의 명확성 | Guides (feedforward) |
+| **Verify / Quality** | 결과 검증과 피드백 루프 | Sensors (feedback) |
+| **Token** | 컨텍스트 윈도우 활용 효율 | Computational + Maintainability |
+| **Multi-agent** | 에이전트 간 역할 분담 | 원문 범위 밖, Anthropic·Claude Code 커뮤니티 관용 |
+
+원문은 코드 품질·아키텍처 강조점이 강하고, 워크숍은 운영·학습 흐름 강조점이 강합니다. 같은 산을 다른 길로 오릅니다.
+
+이 워크숍은 즉시 효과가 큰 첫 3축(Context · Plan · Verify)에 집중합니다.
+
+---
+
+## "Agent = Model + Harness" 슬로건에 대해
+
+이 표현은 Böckeler가 처음 정의한 공식이 아닙니다. 2026년 초 Thoughtworks · OpenAI · Anthropic · LangChain · HumanLayer 등 여러 곳에서 거의 동시 다발적으로 통용되기 시작한 커뮤니티 슬로건이며, Böckeler 글은 그중 가장 체계화된 정리 중 하나입니다.
 
 ---
 

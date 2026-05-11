@@ -24,9 +24,11 @@ import { Callout, Cards } from 'nextra/components'
 
 ## 💡 핵심 개념: Agent = Model + Harness
 
-> *"The performance of an agent is determined not just by the model, but by the harness around it — the context it receives, the plan it follows, and the feedback loops that let it self-correct."*
+> *"Engineering a user harness for a coding agent is a specific form of context engineering. (...) Whenever an issue happens multiple times, the feedforward and feedback controls should be improved."*
 >
-> — Birgitta Böckeler, [Harness engineering for coding agent users](https://martinfowler.com/articles/harness-engineering.html), Thoughtworks (2026.02.17)
+> — Birgitta Böckeler, [Harness engineering for coding agent users](https://martinfowler.com/articles/harness-engineering.html), Martin Fowler's Exploring Gen AI (2026.04.02)
+>
+> `Agent = Model + Harness` 슬로건은 2026년 초 여러 커뮤니티에서 동시에 통용되기 시작한 표현이며, 위 글은 그중 가장 체계화된 정리 중 하나입니다.
 
 **하네스(Harness)** 는 원래 말이 끄는 마구(馬具)에서 온 단어입니다. 말의 힘을 유용한 일로 향하게 하는 장치죠. AI 에이전트 맥락에서는 **LLM의 능력을 신뢰할 수 있는 작업으로 향하게 하는 모든 것**을 가리킵니다.
 
@@ -108,8 +110,10 @@ flowchart LR
 
 5가지는 독립적인 기술이 아닙니다. **멀티에이전트는 앞의 4가지가 잘 갖춰졌을 때 자연스럽게 도달하는 형태**입니다.
 
-> 출처: Birgitta Böckeler, [Harness engineering for coding agent users](https://martinfowler.com/articles/harness-engineering.html) (Thoughtworks, 2026)
+> 참고: Birgitta Böckeler, [Harness engineering for coding agent users](https://martinfowler.com/articles/harness-engineering.html) (Martin Fowler's Exploring Gen AI, 2026.04.02)
 > · Boris Cherny, [How Boris Uses Claude Code](https://howborisusesclaudecode.com) (2026)
+>
+> 위 5축은 워크숍이 학습 흐름에 맞춰 재정리한 framing입니다. Böckeler 원문 분류(Guides/Sensors · Computational/Inferential · 3 regulation categories)는 [원문 정리](/references/harness-engineering)를 참조.
 
 ---
 
