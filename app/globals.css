@@ -220,6 +220,28 @@ article h3 {
   padding-left: 1.25em !important;
 }
 
+/* --- Details block 내부 리스트도 동일 정렬 처리 ---
+   <details>로 만든 토글 블록 안의 markdown task-list / ul / ol 도
+   callout과 같은 좌측 정렬 문제가 있다. details 본문 padding(14px)
+   안쪽에서 리스트가 추가로 들여쓰이지 않도록 표준화. */
+details ul.contains-task-list {
+  padding-left: 0 !important;
+  list-style: none !important;
+}
+
+details ul.contains-task-list > li.task-list-item {
+  padding-left: 0 !important;
+}
+
+details ul.contains-task-list input[type="checkbox"] {
+  margin-right: 0.5em !important;
+  vertical-align: -0.05em;
+}
+
+details :is(ul, ol):not(.contains-task-list) {
+  padding-left: 1.25em !important;
+}
+
 /* --- Details / Toggle block: Notion-style
    기본 marker 제거 + ::before chevron 직접 그려서 정확한 정렬. */
 details {
@@ -243,27 +265,13 @@ details summary {
   user-select: none;
 }
 
-/* WebKit/Safari/Chrome 기본 marker 숨김 */
+/* WebKit/Safari/Chrome 기본 marker 숨김 (Nextra가 svg chevron을 별도로 렌더) */
 details summary::-webkit-details-marker {
   display: none !important;
 }
 
-/* 직접 그린 chevron */
-details summary::before {
-  content: '›';
-  display: inline-block;
-  font-size: 1.2em;
-  line-height: 1;
-  width: 1em;
-  flex-shrink: 0;
-  color: var(--notion-text-light);
-  transition: transform 0.15s ease;
-  transform: rotate(0deg);
-}
-
-details[open] summary::before {
-  transform: rotate(90deg);
-}
+/* Nextra가 summary 안에 자체 svg chevron(rotate-90 애니메이션)을 렌더하므로
+   여기서 추가 ::before chevron을 그리면 두 개가 겹친다. 직접 그리지 않는다. */
 
 /* 열린 후 본문 영역: summary와 같은 좌측 padding 유지 */
 details > *:not(summary) {
