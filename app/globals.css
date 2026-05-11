@@ -114,12 +114,14 @@ article h3 {
 }
 
 /* --- Callout: Notion-style (semantic tokens, dark-mode-aware) ---
-   노션 실측 기준: padding 16px(상하) · 16px(우) · 14px(좌), emoji-text gap 12px.
-   margin-block만 지정해서 좌우 auto 가운데 정렬 유지 (본문 정렬). */
+   노션 실측 기준 + docs 컨벤션의 좌측 accent 결합.
+   - padding: 14px 16px 14px 14px (좌측은 accent border 자리)
+   - emoji-text gap: 12px
+   - semantic callout은 좌측 3px accent border로 type 식별성 강화 */
 .nextra-callout {
   border: none !important;
   border-radius: 4px !important;
-  padding: 16px 16px 16px 14px !important;
+  padding: 14px 16px !important;
   margin-block: 1.5em !important;
   font-size: 0.938em !important;
   line-height: 1.65 !important;
@@ -127,24 +129,34 @@ article h3 {
   gap: 12px !important;
 }
 
+/* semantic callout: 배경색 + 좌측 3px accent border로 정보 위계 강화.
+   accent border 너비만큼 좌측 padding을 줄여 본문 시작 위치는 동일하게 유지. */
 .nextra-callout[class*="bg-blue"] {
   background-color: var(--callout-info-bg) !important;
   color: var(--callout-info-text) !important;
+  border-left: 3px solid var(--callout-info-text) !important;
+  padding-left: 13px !important;
 }
 
 .nextra-callout[class*="bg-green"] {
   background-color: var(--callout-success-bg) !important;
   color: var(--callout-success-text) !important;
+  border-left: 3px solid var(--callout-success-text) !important;
+  padding-left: 13px !important;
 }
 
 .nextra-callout[class*="bg-yellow"] {
   background-color: var(--callout-warning-bg) !important;
   color: var(--callout-warning-text) !important;
+  border-left: 3px solid var(--callout-warning-text) !important;
+  padding-left: 13px !important;
 }
 
 .nextra-callout[class*="bg-red"] {
   background-color: var(--callout-error-bg) !important;
   color: var(--callout-error-text) !important;
+  border-left: 3px solid var(--callout-error-text) !important;
+  padding-left: 13px !important;
 }
 
 /* Default callout (no type) — Notion's subtle gray block */
@@ -197,6 +209,71 @@ article h3 {
   margin: 0 !important;
 }
 
+/* 단락이 2개 이상일 때 vertical rhythm을 위한 sibling spacing.
+   외부 prose의 21.25px보다 타이트한 0.65em(약 9.7px)로 callout 내부 응집감 유지. */
+.nextra-callout p + p,
+.nextra-callout p + ul,
+.nextra-callout p + ol,
+.nextra-callout p + pre,
+.nextra-callout ul + p,
+.nextra-callout ol + p,
+.nextra-callout pre + p {
+  margin-top: 0.65em !important;
+}
+
+/* 첫 자식이 아닌 본문 요소의 margin-top 일관화 (prose 기본값 무력화) */
+.nextra-callout :is(ul, ol, pre, blockquote):not(:first-child) {
+  margin-top: 0.65em !important;
+}
+
+/* strong(헤더 강조)의 weight 명시. callout 안에서는 600이 적정. */
+.nextra-callout strong {
+  font-weight: 600 !important;
+}
+
+/* callout 내부 inline code: 외부 본문의 빨간 강조 스타일은 callout 색상 시스템과 충돌한다.
+   해당 callout 톤에 맞춰 차분한 background + 텍스트는 상속 컬러 유지. */
+.nextra-callout :not(pre) > code {
+  background-color: color-mix(in srgb, currentColor 12%, transparent) !important;
+  color: inherit !important;
+  border: none !important;
+  padding: 0.1em 0.4em !important;
+  font-size: 0.92em !important;
+  border-radius: 3px !important;
+  white-space: nowrap;
+}
+
+/* callout 내부 pre code 블록도 callout 톤에 맞춰 차분하게 */
+.nextra-callout pre {
+  background-color: color-mix(in srgb, currentColor 6%, transparent) !important;
+  border: none !important;
+  padding: 10px 12px !important;
+  border-radius: 4px !important;
+  font-size: 0.92em !important;
+}
+
+.nextra-callout pre code {
+  background: transparent !important;
+  padding: 0 !important;
+  color: inherit !important;
+}
+
+/* 혹시 callout 안에 blockquote가 남아 있어도 callout과 중복 강조되지 않게 차분 처리.
+   기존 좌측 세로선 · 이탤릭 · 별도 배경 모두 제거. 일반 단락처럼 보이되 살짝 옅게. */
+.nextra-callout blockquote {
+  border-left: none !important;
+  background: transparent !important;
+  padding: 0 !important;
+  margin: 0.65em 0 0 !important;
+  font-style: normal !important;
+  color: inherit !important;
+  opacity: 0.85 !important;
+}
+
+.nextra-callout blockquote p {
+  margin: 0 !important;
+}
+
 /* --- Callout 내부 리스트 좌측 정렬
    글로벌 `article ul/ol { padding-left: 1.5em }` 이 callout 안에서는
    <p> 형제와 좌측선이 어긋나는 stair-step을 만든다.
@@ -229,13 +306,19 @@ details ul.contains-task-list {
   list-style: none !important;
 }
 
+/* 체크리스트 항목 간격을 타이트하게: 짧은 한 줄 텍스트 5개 정도에 적합 */
 details ul.contains-task-list > li.task-list-item {
   padding-left: 0 !important;
+  margin: 0 !important;
+  line-height: 1.6 !important;
 }
 
+/* 체크박스 크기를 텍스트(16px)와 균형 맞춤. baseline 살짝 내려서 시각 중심 정렬 */
 details ul.contains-task-list input[type="checkbox"] {
+  width: 16px !important;
+  height: 16px !important;
   margin-right: 0.5em !important;
-  vertical-align: -0.05em;
+  vertical-align: -0.2em !important;
 }
 
 details :is(ul, ol):not(.contains-task-list) {
@@ -265,6 +348,18 @@ details summary {
   user-select: none;
 }
 
+/* Nextra가 summary 안의 텍스트를 자동으로 <h3>로 감싸므로,
+   heading 기본 margin/padding/line-height/font-size 때문에 박스가 비대해지고
+   chevron(svg)과 시각 중심이 어긋난다. summary 안 heading은 인라인 텍스트처럼 reset. */
+details > summary :is(h1, h2, h3, h4, h5, h6) {
+  margin: 0 !important;
+  padding: 0 !important;
+  font-size: 1rem !important;
+  font-weight: 500 !important;
+  line-height: 1.5 !important;
+  color: inherit !important;
+}
+
 /* WebKit/Safari/Chrome 기본 marker 숨김 (Nextra가 svg chevron을 별도로 렌더) */
 details summary::-webkit-details-marker {
   display: none !important;
@@ -273,19 +368,29 @@ details summary::-webkit-details-marker {
 /* Nextra가 summary 안에 자체 svg chevron(rotate-90 애니메이션)을 렌더하므로
    여기서 추가 ::before chevron을 그리면 두 개가 겹친다. 직접 그리지 않는다. */
 
-/* 열린 후 본문 영역: summary와 같은 좌측 padding 유지 */
+/* 열린 후 본문 영역(Nextra가 자동 삽입하는 transition wrapper <div>):
+   상단은 살짝 좁게(8px) 둬서 summary 헤더와의 시각적 분리를 줄이고,
+   좌우는 16px로 시각적 안정감, 하단은 12px로 균형. */
 details > *:not(summary) {
-  padding-left: 14px !important;
-  padding-right: 14px !important;
+  padding: 8px 16px 12px !important;
 }
 
-details > *:last-child:not(summary) {
-  padding-bottom: 14px !important;
+/* 본문 내부에서 첫 자식이 아닌 ul/p 사이 간격도 prose 기본(21.25px)보다 줄임.
+   짧은 단락·리스트의 toggle 박스에서 vertical rhythm을 타이트하게 운영. */
+details :is(ul, ol, p):not(:first-child) {
+  margin-top: 14px !important;
 }
 
-/* details 안 첫 본문은 summary와 시각적 분리를 위해 약간의 상단 마진 */
-details[open] > *:not(summary):first-of-type {
+/* Nextra가 transition wrapper(<div>) 안에 또 다른 빈 inner <div>를 두고,
+   그 안에 ul/p/heading을 둔다. wrapper의 손자까지 매칭되도록 직접 셀렉터 사용.
+   Nextra prose가 ul/p/h에 margin-top: 21.25px를 적용하여 summary와 본문 사이
+   공간이 과도해지므로 첫 자식 위치에 있는 요소의 margin-top을 제거. */
+details :is(ul, ol, p, h1, h2, h3, h4, h5, h6):first-child {
   margin-top: 0 !important;
+}
+
+details :is(ul, ol, p, h1, h2, h3, h4, h5, h6):last-child {
+  margin-bottom: 0 !important;
 }
 
 /* --- Inline code: Notion-style (red text, subtle bg) --- */

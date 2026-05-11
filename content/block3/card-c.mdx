@@ -2,7 +2,7 @@
 title: 카드 C — 새 기능을 안전하게 추가
 ---
 
-import { Callout, Steps } from 'nextra/components'
+import { Callout, Steps, Tabs } from 'nextra/components'
 
 # 카드 C: 새 기능을 안전하게 추가하기 ★★☆
 
@@ -13,12 +13,64 @@ import { Callout, Steps } from 'nextra/components'
 > 기존 코드에 새 기능을 추가해야 합니다.
 > Plan Mode + Verification Loop로 기존 동작을 깨지 않고 안전하게 추가합니다.
 
-<Callout type="info">
+<Callout type="info" emoji="🎯">
 **어떤 하네스 패턴을 쓰는가**
 
-- **Context**: CLAUDE.md로 기존 컨벤션 유지
-- **Plan**: Plan Mode로 범위와 순서 먼저 확정
+- **Context**: `CLAUDE.md` / `AGENTS.md` 로 기존 컨벤션 유지
+- **Plan**: Plan Mode (또는 명시적 plan 프롬프트)로 범위와 순서 먼저 확정
 - **Verify**: 기존 테스트 + 새 테스트 모두 통과 확인
+</Callout>
+
+<Callout emoji="🛤️">
+**두 가지 트랙 — 본인 수준에 맞게 선택**
+
+| 트랙 | 대상 코드 | 추천 대상 |
+|---|---|---|
+| **기본 트랙** | `sds-harness-lab` 에 아래 요구사항 카드 중 하나 추가 | 처음 시도. Plan → Verify 사이클을 작은 코드에서 끝까지 돌리기 |
+| **도전 트랙** | **Aider** 또는 **Codex CLI** 의 한 모듈에 작은 개선 추가 (오타·작은 메시지 보강 수준) | 실전 규모에서 Plan/Verify가 어떻게 다른지 직접 보고 싶을 때 |
+
+도전 트랙은 "큰 기능 추가"가 아닙니다 — 한 줄~수십 줄 정도의 작은 보강에서 **Plan과 Verify가 어떻게 다르게 작동하는지** 관찰하는 게 목표입니다.
+</Callout>
+
+### 도전 트랙 — 분석/기여 대상 선택
+
+<Tabs items={['Aider (Python)', 'Codex CLI (TypeScript)']}>
+  <Tabs.Tab>
+    **[paul-gauthier/aider](https://github.com/paul-gauthier/aider)** 에 작은 개선을 시도해보세요.
+
+    예시 시도:
+    - 특정 에러 메시지를 더 명확하게 (예: `aider/commands.py` 의 사용자 친화 메시지)
+    - `--help` 출력에 짧은 예시 추가
+    - 한국어 로케일 문서 한 줄 추가
+
+    **Plan 프롬프트 예시**:
+    ```
+    aider/commands.py 의 /add 명령에서 존재하지 않는 파일을 추가하려 할 때
+    나오는 에러 메시지를 더 명확하게 바꾸려고 해. 변경하지 말고 계획만 먼저 보여줘 —
+    어떤 파일을 어디서 어떻게 수정할지, 그리고 기존 테스트 중 어떤 것이 영향을 받을지.
+    ```
+  </Tabs.Tab>
+  <Tabs.Tab>
+    **[openai/codex](https://github.com/openai/codex)** 에 작은 개선을 시도해보세요.
+
+    예시 시도:
+    - 슬래시 명령 도움말 정렬·문구 다듬기
+    - 특정 에러 경로의 로그 메시지 보강
+    - README 작은 보강
+
+    **Plan 프롬프트 예시**:
+    ```
+    Codex의 /help 명령 출력에 짧은 예시 1줄을 명령마다 추가하려고 해.
+    변경하지 말고 계획만 먼저 보여줘 — 어떤 파일에 어떤 형식으로 추가할지,
+    기존 테스트·스냅샷이 어떻게 영향받는지.
+    ```
+  </Tabs.Tab>
+</Tabs>
+
+<Callout type="warning" emoji="⚠️">
+**도전 트랙 주의 — 실제 PR이 목적이 아님**
+
+큰 오픈소스에 PR을 만드는 게 목표가 아닙니다. 본인 fork에서 작은 변경을 직접 시도하면서 **Plan → Verify 사이클이 큰 코드에서 어떻게 다르게 느껴지는지** 체험하는 게 카드 C 도전 트랙의 핵심입니다.
 </Callout>
 
 ---
@@ -82,12 +134,31 @@ GET /projects에 검색 기능을 추가하세요.
 <Steps>
 ### Plan Mode 진입
 
-`Shift + Tab` → Plan Mode
+<Tabs items={['Claude Code', 'Codex', 'AI Pro']}>
+  <Tabs.Tab>
+    `Shift + Tab` → Plan Mode
 
-```
-다음 요구사항을 구현하기 위한 계획을 만들어줘:
-{선택한 요구사항}
-```
+    ```
+    다음 요구사항을 구현하기 위한 계획을 만들어줘:
+    {선택한 요구사항}
+    ```
+  </Tabs.Tab>
+  <Tabs.Tab>
+    명시적 프롬프트로 plan을 먼저 받습니다:
+    ```
+    변경하지 말고 계획만 먼저 보여줘.
+    요구사항: {선택한 요구사항}
+    포함할 것: 변경할 파일·순서·완료 검증 방법
+    ```
+  </Tabs.Tab>
+  <Tabs.Tab>
+    계획 검토 기능 또는 명시적 프롬프트:
+    ```
+    먼저 계획만 보여줘. 코드는 쓰지 마.
+    요구사항: {선택한 요구사항}
+    ```
+  </Tabs.Tab>
+</Tabs>
 
 ### 계획 검토
 
@@ -146,18 +217,18 @@ GET /projects에 검색 기능을 추가하세요.
 
 ## ✅ 완료 기준
 
-- [ ] Plan Mode로 계획 수립 후 실행했다
-- [ ] 새 기능 테스트 작성 및 통과
-- [ ] 기존 테스트 전부 통과 유지
-- [ ] CLAUDE.md에 "자주 하는 실수" 업데이트
-
----
-
-<Callout emoji="🎤">
-**블록 4 발표 준비**
-
-3분 안에 설명할 내용:
-1. 어떤 기능을 추가했나?
-2. Plan Mode 없이 했다면 어떻게 됐을 것 같나?
-3. 가장 예상치 못했던 순간은?
-</Callout>
+<Tabs items={['기본 트랙', '도전 트랙 (Aider / Codex CLI)']}>
+  <Tabs.Tab>
+    - [ ] Plan Mode로 계획 수립 후 실행했다
+    - [ ] 새 기능 테스트 작성 및 통과
+    - [ ] 기존 테스트 전부 통과 유지
+    - [ ] `CLAUDE.md` / `AGENTS.md` 에 "자주 하는 실수" 업데이트
+  </Tabs.Tab>
+  <Tabs.Tab>
+    - [ ] 외부화된 plan 1개 작성 (변경할 파일·순서·검증 방법 포함)
+    - [ ] plan과 실제 변경이 일치하는지 본인이 한 번 검토
+    - [ ] 작은 변경 1개 적용 + 영향받는 기존 테스트가 무엇인지 짚을 수 있다
+    - [ ] 큰 코드에서 Plan/Verify가 작은 코드와 다르게 느껴진 지점 1개 기록
+    - [ ] 그 차이를 `CLAUDE.md` / `AGENTS.md` 에 운영 노트로 추가
+  </Tabs.Tab>
+</Tabs>

@@ -2,7 +2,7 @@
 title: 카드 B — 반복 작업 자동화
 ---
 
-import { Callout, Steps } from 'nextra/components'
+import { Callout, Steps, Tabs } from 'nextra/components'
 
 # 카드 B: 반복 작업을 자동화하기 ★★☆
 
@@ -11,17 +11,61 @@ import { Callout, Steps } from 'nextra/components'
 ## 📖 시나리오
 
 > 매 스프린트마다, 매 PR마다, 매 코드 리뷰마다 같은 작업을 반복합니다.
-> 이 패턴을 AI가 재현할 수 있게 만들어, 반복을 없앤다.
+> 이 패턴을 AI가 재현할 수 있게 만들어, 반복을 없앱니다.
 
-<Callout type="info">
+<Callout type="info" emoji="🎯">
 **어떤 하네스 패턴을 쓰는가**
 
-- **Context**: 반복 패턴의 규칙을 CLAUDE.md에 정의하고, Skills로 명령어화
-- **Verify**: 여러 샘플로 실행하며 일관성 확인
+- **Context**: 반복 패턴의 규칙을 `CLAUDE.md` / `AGENTS.md`에 정의하고, Skills로 명령어화합니다.
+- **Verify**: 여러 샘플로 실행하며 일관성을 확인합니다.
 
-> 우아한형제들 실제 사례: MCP stdio로 팀 AI 자산(프롬프트, 규칙)을 npm 패키지로 만들어 "공유가 아니라 설치로 전파"
-> — 조현석, [흩어져 있는 AI 자산, 'MCP stdio'로 헤쳐모여!](https://techblog.woowahan.com/25986/) (2026.03)
+우아한형제들 사례 — MCP stdio로 팀 AI 자산(프롬프트·규칙)을 npm 패키지로 만들어 **공유가 아니라 설치로 전파**한 케이스가 있습니다([조현석, 2026.03](https://techblog.woowahan.com/25986/)).
 </Callout>
+
+<Callout emoji="🛤️">
+**두 가지 트랙 — 본인 수준에 맞게 선택**
+
+| 트랙 | 목표 | 추천 대상 |
+|---|---|---|
+| **기본 트랙** | 내 반복 작업 1개를 Skills로 정의 + 3회 일관성 확인 | 처음 Skills를 만들어보는 경우 |
+| **도전 트랙** | 실제 오픈소스의 슬래시 명령 구현을 분석한 뒤, 본인 Skills를 **MCP 서버 형태**로 한 단계 확장 | Skills를 이미 써봤거나, 팀 단위 배포까지 만들어보고 싶을 때 |
+
+도전 트랙은 "Skills 파일 1개 완성"이 아니라 **Skills의 작동 원리를 코드로 직접 본 뒤, 팀 배포 가능한 형태(MCP)로 한 단계 더 가는 것**이 목표입니다.
+</Callout>
+
+### 도전 트랙 — 분석할 슬래시 명령 구현
+
+<Tabs items={['Aider (Python)', 'Codex CLI (TypeScript)']}>
+  <Tabs.Tab>
+    **[paul-gauthier/aider](https://github.com/paul-gauthier/aider)** 에서 슬래시 명령이 어떻게 등록·파싱·실행되는지 추적하세요.
+
+    추천 진입점:
+    - `aider/commands.py` — 모든 슬래시 명령의 핵심 (`/add`, `/drop`, `/diff`, `/test`, `/run` 등)
+    - `aider/main.py` — CLI 진입과 명령 dispatch
+
+    **첫 질문 후보**:
+    ```
+    aider/commands.py를 보고 "사용자가 /test를 입력하면 어떤 함수가
+    어떤 인자로 호출되는지" 호출 흐름을 설명해줘.
+    그리고 내가 새 슬래시 명령(/review)을 추가하려면 어디를 어떻게
+    수정해야 하는지 단계별로 알려줘.
+    ```
+  </Tabs.Tab>
+  <Tabs.Tab>
+    **[openai/codex](https://github.com/openai/codex)** 의 슬래시 명령 처리 흐름을 분석하세요.
+
+    추천 진입점:
+    - `src/` 의 명령 처리 파일 (`/help`, `/clear`, `/compact` 등이 어떻게 정의·파싱되는지)
+    - 시스템 프롬프트와 슬래시 명령이 LLM 호출 시 어떻게 결합되는지
+
+    **첫 질문 후보**:
+    ```
+    Codex의 슬래시 명령 시스템이 어떻게 구성돼있는지 설명해줘.
+    /compact 같은 명령이 입력됐을 때 LLM에 보내는 메시지가
+    어떻게 변형되는지 코드 흐름으로 보여줘.
+    ```
+  </Tabs.Tab>
+</Tabs>
 
 ---
 
@@ -200,19 +244,22 @@ npm install @our-team/mcp-agent
 
 ## ✅ 완료 기준
 
-- [ ] 반복 작업 1개의 Skills 파일 (`.claude/commands/`) 완성
-- [ ] 3회 이상 샘플 실행 후 일관성 확인
-- [ ] CLAUDE.md에 Skills 목록 등록
-- [ ] CLAUDE.md "AI가 자주 헤매는 것" 섹션에 항목 1개 이상 추가
-- [ ] "팀원이 이 명령어를 써도 같은 결과가 나온다"고 말할 수 있습니다
-
----
-
-<Callout emoji="🎤">
-**블록 4 발표 준비**
-
-3분 안에 설명할 내용:
-1. 어떤 반복 작업을 자동화했나?
-2. 템플릿을 만들면서 발견한 것은?
-3. 실제로 써보니 어떤 점이 달랐나?
-</Callout>
+<Tabs items={['기본 트랙', '도전 트랙 (Aider / Codex CLI + MCP)']}>
+  <Tabs.Tab>
+    - [ ] 반복 작업 1개의 Skills 파일 (`.claude/commands/`) 완성
+    - [ ] 3회 이상 샘플 실행 후 일관성 확인
+    - [ ] `CLAUDE.md` / `AGENTS.md` 에 Skills 목록 등록
+    - [ ] "AI가 자주 헤매는 것" 섹션에 항목 1개 이상 추가
+    - [ ] "팀원이 이 명령어를 써도 같은 결과가 나온다"고 말할 수 있다
+  </Tabs.Tab>
+  <Tabs.Tab>
+    - [ ] 분석한 오픈소스의 슬래시 명령 등록·파싱·실행 흐름을 3문장 이내로 설명 가능
+    - [ ] 본인 Skills 파일 1개 완성 + 3회 일관성 확인
+    - [ ] Skills를 MCP 서버 형태로 감싸기 위한 최소 설계 스케치 작성 (한 페이지)
+       - 어떤 도구를 노출할지
+       - 입력·출력 스키마
+       - 팀이 어떻게 설치할지
+    - [ ] (선택) MCP stdio 서버 한 개 직접 구현해서 도구에서 호출 성공
+    - [ ] "내가 만든 자산이 공유가 아니라 설치로 전파될 수 있는가"에 답할 수 있다
+  </Tabs.Tab>
+</Tabs>

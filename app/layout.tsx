@@ -25,14 +25,32 @@ export default async function RootLayout({
         <Layout
           navbar={
             <Navbar
-              logo={<strong>Harness Engineering</strong>}
+              logo={
+                <span style={{ fontWeight: 700 }}>
+                  Harness Engineering
+                  <span
+                    style={{
+                      opacity: 0.7,
+                      fontWeight: 400,
+                      marginLeft: 8,
+                      fontSize: '0.85em',
+                    }}
+                  >
+                    SDS · 2026
+                  </span>
+                </span>
+              }
             />
           }
           pageMap={await getPageMap()}
           docsRepositoryBase="https://github.com/imakerjun/effective-ai-coding-sds"
+          sidebar={{ defaultMenuCollapseLevel: 1 }}
+          toc={{ title: '이 페이지에서' }}
+          editLink={null}
+          feedback={{ content: null }}
           footer={
             <Footer>
-              <p>삼성SDS × 멀티캠퍼스 AI 코드 에이전트 교육 — 임동준(makerjun)</p>
+              <div>삼성SDS × 멀티캠퍼스 AI 코드 에이전트 교육 — 임동준(makerjun)</div>
             </Footer>
           }
         >

@@ -6,13 +6,13 @@ import { Callout, Steps, Tabs } from 'nextra/components'
 
 # 사전 준비
 
-<Callout type="warning">
+<Callout type="warning" emoji="⏰">
 교육 **전날까지** 완료해주세요. 당일 설치에 시간을 쓰면 실습 시간이 줄어듭니다.
 </Callout>
 
-## 1. Claude Code 설치
+## 🛠️ 1. CLI 도구 설치
 
-<Tabs items={['Claude Code 사용자', 'AI Pro 사용자']}>
+<Tabs items={['Claude Code 사용자', 'Codex 사용자', 'AI Pro 사용자']}>
   <Tabs.Tab>
     <Steps>
       ### Node.js 18 이상 확인
@@ -38,22 +38,50 @@ import { Callout, Steps, Tabs } from 'nextra/components'
     </Steps>
   </Tabs.Tab>
   <Tabs.Tab>
-    <Callout type="info">
+    <Steps>
+      ### Node.js 18 이상 확인
+      ```bash
+      node --version
+      ```
+
+      ### Codex CLI 설치
+      ```bash
+      npm install -g @openai/codex
+      ```
+
+      ### 설치 확인
+      ```bash
+      codex --version
+      ```
+
+      ### 인증
+      ```bash
+      codex
+      # ChatGPT 계정 또는 OPENAI_API_KEY 환경변수로 인증
+      ```
+    </Steps>
+
+    <Callout type="info" emoji="💡">
+      Codex는 단계별 승인(approval policy)이 기본입니다. 변경 전 사람에게 묻는 흐름이 Claude Code의 Plan Mode와 비슷한 안전판 역할을 합니다.
+    </Callout>
+  </Tabs.Tab>
+  <Tabs.Tab>
+    <Callout type="info" emoji="💡">
       AI Pro는 별도 설치 없이 기존 환경 그대로 참여 가능합니다.
       각 세션에서 "AI Pro에서는 이렇게" 매핑을 제공합니다.
 
-      | Claude Code | AI Pro |
-      |---|---|
-      | CLAUDE.md | Rules 파일 |
-      | Plan Mode (Shift+Tab) | 계획 검토 기능 |
-      | `/` 커스텀 명령어 | Skills |
+      | Claude Code | Codex | AI Pro |
+      |---|---|---|
+      | CLAUDE.md | AGENTS.md | Rules 파일 |
+      | Plan Mode (Shift+Tab) | Approval Policy / Explore→Plan→Code | 계획 검토 기능 |
+      | `/` 커스텀 명령어 | Custom prompts / Slash commands | Skills |
     </Callout>
   </Tabs.Tab>
 </Tabs>
 
 ---
 
-## 2. 실습 코드베이스 준비
+## 📦 2. 실습 코드베이스 준비
 
 ```bash
 git clone https://github.com/imakerjun/sds-harness-lab
@@ -75,13 +103,13 @@ python3 -m pytest tests/ -v
 # → "0 tests ran" 이 정상 (테스트가 아직 없음)
 ```
 
-<Callout type="info">
+<Callout type="info" emoji="🎯">
 **이 코드베이스는 의도적으로 불완전합니다.** 테스트 없음, 문서 없음, 입력값 검증 없음 — 이것이 오늘 실습의 소재입니다.
 </Callout>
 
 ---
 
-## 3. CLAUDE.md 위치 확인
+## 📍 3. CLAUDE.md 위치 확인
 
 ```bash
 ls sds-harness-lab/CLAUDE.md
@@ -92,7 +120,7 @@ ls sds-harness-lab/CLAUDE.md
 
 ---
 
-## 코드베이스 구조 미리보기
+## 🗂️ 코드베이스 구조 미리보기
 
 ```
 sds-harness-lab/

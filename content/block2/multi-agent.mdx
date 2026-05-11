@@ -145,7 +145,7 @@ flowchart LR
 
 `sds-harness-lab`에서 새 기능을 추가하는 작업을 **두 세션**으로 나눕니다:
 
-<Tabs items={['Claude Code', 'AI Pro']}>
+<Tabs items={['Claude Code', 'Codex', 'AI Pro']}>
   <Tabs.Tab>
     **세션 A — Plan만** (`Shift+Tab` → Plan Mode)
     ```
@@ -161,6 +161,33 @@ flowchart LR
     - 계획과 실제 구현이 일치하는가?
     - 놓친 엣지 케이스가 있는가?
     ```
+  </Tabs.Tab>
+  <Tabs.Tab>
+    Codex는 단일 세션 모델이라 멀티 에이전트는 **세션 분리 + 산출물 전달**로 만듭니다. 컨텍스트 방화벽이 자동으로 안 쳐지므로 사람이 의도적으로 끊어야 합니다.
+
+    **세션 A — Plan만**
+    ```bash
+    codex
+    # 첫 메시지
+    "complete_task 기능에 완료 날짜 기록을 추가하려고 해.
+    계획만 보여줘 — 어떤 파일을 어떻게 수정할지. 코드는 아직 쓰지 마."
+    ```
+    계획을 `plan.md`로 저장하고 세션 종료.
+
+    **세션 B — Implement만 (새 `codex` 실행)**
+    ```
+    @plan.md를 보고 그대로 구현해줘. 계획을 벗어나면 멈춰서 물어봐.
+    ```
+
+    **세션 C — Review만 (또 새 `codex` 실행)**
+    ```
+    @plan.md와 변경된 코드만 비교해서 리뷰해줘.
+    구현 과정은 모른다고 가정해.
+    - 계획과 실제 구현이 일치하는가?
+    - 놓친 엣지 케이스가 있는가?
+    ```
+
+    세 세션 모두 **AGENTS.md를 공유**하지만 대화 히스토리는 공유하지 않습니다 — 이게 컨텍스트 방화벽의 핵심.
   </Tabs.Tab>
   <Tabs.Tab>
     **Chat 모드 — Plan만**

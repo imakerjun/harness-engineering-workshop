@@ -127,11 +127,25 @@ AI가 "어떻게 구현할 것인가"를 담당합니다.
 ## 🧪 실습 (40분)
 
 <Steps>
-### Step 1 — CLAUDE.md에 검증 방법 추가 (5분)
+### Step 1 — 컨텍스트 파일에 검증 방법 추가 (5분)
 
-위 내용을 `sds-harness-lab/CLAUDE.md`에 추가합니다.
+위 내용을 도구의 컨텍스트 파일에 추가합니다.
+
+<Tabs items={['Claude Code', 'Codex', 'AI Pro']}>
+  <Tabs.Tab>
+    `sds-harness-lab/CLAUDE.md` 에 추가합니다.
+  </Tabs.Tab>
+  <Tabs.Tab>
+    `sds-harness-lab/AGENTS.md` 에 추가합니다.
+  </Tabs.Tab>
+  <Tabs.Tab>
+    `sds-harness-lab/AGENTS.md` 또는 Rules 파일에 추가합니다.
+  </Tabs.Tab>
+</Tabs>
 
 ### Step 2 — 검증 루프 연결 실습 (20분)
+
+도구를 열고 동일한 프롬프트를 입력합니다. 핵심은 **AI가 자기 결과를 직접 검증하게 만드는 한 문장**입니다.
 
 ```
 complete_task 함수에 대한 단위 테스트를 작성해줘.
@@ -142,6 +156,18 @@ complete_task 함수에 대한 단위 테스트를 작성해줘.
 실패하면 코드를 수정해서 통과시켜줘.
 모든 테스트가 통과할 때까지 반복해줘.
 ```
+
+<Tabs items={['Claude Code', 'Codex', 'AI Pro']}>
+  <Tabs.Tab>
+    Claude Code는 `Bash` 도구로 `pytest`를 직접 실행합니다 — 별도 승인 없이 검증 루프가 돌아갑니다.
+  </Tabs.Tab>
+  <Tabs.Tab>
+    Codex는 approval policy에 따라 명령 실행 전 승인을 묻습니다. 검증 루프 실습에서는 `auto-edit` 또는 `full-auto` 모드로 두면 Claude Code와 같은 흐름이 됩니다 (단, 코드 변경도 자동 적용되므로 신뢰할 수 있는 코드베이스에서만).
+  </Tabs.Tab>
+  <Tabs.Tab>
+    AI Pro에서 터미널 실행을 허용한 후 동일 프롬프트를 입력합니다. 도구가 `pytest`를 실행할 수 없는 환경이면, 사람이 직접 `pytest`를 돌려 결과를 다음 메시지에 붙여넣어 줍니다 — 이게 수동 검증 루프.
+  </Tabs.Tab>
+</Tabs>
 
 관찰할 것:
 - AI가 테스트 실행 결과를 보고 스스로 수정하는가?
@@ -173,8 +199,8 @@ create_project 함수에 대해 두 가지 테스트를 작성해줘:
 <Callout emoji="✅">
 **세션 완료 체크**
 - [ ] `tests/` 디렉터리에 테스트 파일이 생성됐다
-- [ ] `pytest tests/ -v`를 실행하면 테스트가 통과합니다
-- [ ] CLAUDE.md에 검증 방법이 명시돼 있습니다
+- [ ] `pytest tests/ -v`를 실행하면 테스트가 통과한다
+- [ ] CLAUDE.md에 검증 방법이 명시돼 있다
 - [ ] AI가 스스로 테스트를 실행하고 수정하는 것을 관찰했다
 </Callout>
 
